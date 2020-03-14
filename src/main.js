@@ -1,13 +1,10 @@
-const core = require('@actions/core')
-const github = require('@actions/github')
+const core = require('@actions/core');
+const github = require('@actions/github');
+const commitParser = require("../src/commitParser");
 
-function run() {
-    const githubToken = core.getInput("github-token")
-    
-    const githubClient = new github.GitHub(githubToken);
-
-    console.log("PAYLOAD:" + JSON.stringify(github.context.payload, undefined, 2));
-    console.log("CONTEXT: " + github.context);
+export function run() {    
+    commits = commitParser.parseCommits(github.context.payload);
+    commits.array.forEach(commit => {
+        console.log(commit);
+    });
 };
-
-module.exports = run;
