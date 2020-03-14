@@ -1,0 +1,37 @@
+name: 'Commit Message Linter'
+description: 'A configurable git commit linter which will allow you to ensure that git commit messages are formatted like how you like them to be committed'
+inputs:
+  github-token: 
+    description: A github token needed to read commit history of the repo.
+    required: true
+  subject-line-max-chars:  
+    description: 'The maximum number characters in the subject line/first line of commit message'
+    required: false
+    default: "50"
+  subject-line-break: 
+    description: 'If enabled, requires the commit message to have an empty line between the subject line and the body'
+    required: false
+    default: "true"
+  specify-commit-type-chars:
+    description: 'Determines whether the user needs a specific keyword that summarizes what this commit addresses'
+    required: false
+    default: ''
+  body-lines-max-chars:
+    description: 'The maximum number characters in the body lines'
+    required: false
+    default: "75"
+  issue-reference:
+    description: 'Checks whether the commit has made specific references to an issue'
+    required: false
+    default: "true"
+  sign-off-line:
+    description: 'Checks whether the commit has a `Signed-Off By` line and is addressed by a specific email'
+    required: false
+# outputs:
+#   successful-commit: # id of output
+#     description: 'Outputs whether the commit has passed the lint'
+#   failure-reason:
+#     description: 'Describes the reason why the commit has failed the linting process'
+runs:
+  using: 'node12'
+  main: './index.js'

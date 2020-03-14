@@ -1,0 +1,12 @@
+on: [push]
+
+jobs:
+  git-commit-linter:
+    runs-on: ubuntu-latest
+    name: Pre Test Checks
+    steps:
+    - uses: actions/checkout@v1
+    - name: Commit linter
+      uses: ./
+      with:
+          github-token: ${{ secrets.GITHUB_ACCESS_TOKEN }}
