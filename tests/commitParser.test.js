@@ -8,6 +8,7 @@ const singleLineBody = "test body in a single line\n";
 
 const issue = "Issue: #343\n";
 const signOff = "Signed Off By: test@test.com\n";
+const signOffNoNewLine = "Signed Off By: test@test.com";
 
 const correctSubject = subject.replace("\n", "");
 const correctMultiLineBody = multiLineBody.split("\n").slice(0, 2);
@@ -17,7 +18,7 @@ const correctSignOff = signOff.replace("\n", "");
  
 
 describe('Test creation of commit message object', () => {
-    test("Create a commit message object with full fields with multi line body", () => {
+    test("it should create a commit message object with full fields with multi line body", () => {
         const commitString = subject +
                             "\n" +
                             multiLineBody +
@@ -35,7 +36,7 @@ describe('Test creation of commit message object', () => {
         expect(commits[0].signOff).toEqual(correctSignOff);
     });
 
-    test("Create a commit message object with full fields with single line body", () => {
+    test("it should create a commit message object with full fields with single line body", () => {
         const commitString = subject +
                             "\n" +
                             singleLineBody +
@@ -51,6 +52,24 @@ describe('Test creation of commit message object', () => {
         expect(commits[0].body).toEqual(correctSingleLineBody);
         expect(commits[0].issue).toEqual(correctIssue);
         expect(commits[0].signOff).toEqual(correctSignOff);
+    });
+
+    test("it should create a commit message object with full fields without line break at end of commit", () => {
+        const commitString = subject +
+                            "\n" +
+                            singleLineBody +
+                            "\n" +
+                            issue + 
+                            "\n" +
+                            signOffNoNewLine;
+
+        const commits = createCommits(commitString);
+
+        expect(commits).toHaveLength(1);
+        expect(commits[0].subject).toEqual(correctSubject);
+        expect(commits[0].body).toEqual(correctSingleLineBody);
+        expect(commits[0].issue).toEqual(correctIssue);
+        expect(commits[0].signOff).toEqual(signOffNoNewLine);
     });
 
     test("it should create commit object with correct fields when given multi paragraph body", () => {
