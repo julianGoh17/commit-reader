@@ -24913,10 +24913,8 @@ const emptyCommit = {
 
 function parseCommit(string) {
     var messageParts = string.split("\n");
-    messageParts.pop();
+    if (messageParts[messageParts.length -1].length === 0) messageParts.pop();
     emptyLineIndexes = getEmptyLineIndexes(messageParts);
-    // console.log("Message Parts: " + messageParts);
-    // console.log("Empty Line: " + emptyLineIndexes);
     if (messageParts.filter(entry => entry.length > 0).length === 0) return emptyCommit;
     return {
         subject: getSubject(messageParts, emptyLineIndexes),
