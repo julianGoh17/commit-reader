@@ -34,4 +34,4 @@ inputs:
 #     description: 'Describes the reason why the commit has failed the linting process'
 runs:
   using: 'node12'
-  main: './index.js'
+  main: './dist/index.js'
