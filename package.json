@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --coverage",
     "build": "ncc build index.js",
-    "check": "npm run test && npm run build"
+    "check": "npm install jest @zeit/ncc && npm run test && npm run build"
   },
   "jest": {
     "collectCoverage": true,
@@ -27,7 +27,8 @@
   "homepage": "https://github.com/julianGoh17/commit-reader#readme",
   "dependencies": {
     "@actions/core": "^1.2.3",
-    "@actions/github": "^2.1.1"
+    "@actions/github": "^2.1.1",
+    "ncc": "^0.3.6"
   },
   "devDependencies": {
     "jest": "^25.1.0"
