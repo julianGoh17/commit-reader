@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "pre-commit": "ncc build index.js && npm run test"
+    "build": "ncc build index.js",
+    "check": "npm run test && npm run build"
   },
   "jest": {
     "collectCoverage": true,
