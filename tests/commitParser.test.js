@@ -189,9 +189,6 @@ describe('Test creation of commit message object', () => {
         const commits = createCommits(commitString);
         expect(commits).toHaveLength(1);
         expect(commits[0].subject).toEqual(correctSubject);
-
-        console.log(JSON.stringify(commits[0].body));
-
         expect(commits[0].body).toEqual(correctMultiLineBody);
         expect(commits[0].issue).toEqual(correctSignOff);
         expect(commits[0].signOff).toEqual("");

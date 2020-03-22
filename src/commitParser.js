@@ -59,4 +59,4 @@ function parseCommits(payload) {
     return commits;
 }
 
-module.exports = { parseCommits }
+module.exports = { parseCommits };
