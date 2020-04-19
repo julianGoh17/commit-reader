@@ -28,9 +28,10 @@
   "dependencies": {
     "@actions/core": "^1.2.3",
     "@actions/github": "^2.1.1",
+    "@zeit/ncc": "^0.22.1",
     "ncc": "^0.3.6"
   },
   "devDependencies": {
-    "jest": "^25.1.0"
+    "jest": "^25.3.0"
   }
 }

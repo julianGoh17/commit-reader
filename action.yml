@@ -11,23 +11,24 @@ inputs:
   subject-line-regex:
     description: 'Determines whether the subject line follows a specific regex'
     required: false
-    default: '*'
+    default: '\\*'
   body-line-max-chars:
     description: 'The maximum number characters in the body lines'
     required: false
     default: "75"
   issue-reference-regex:
-    description: 'Checks whether the commit has made specific references to an issue'
+    description: 'Checks whether the commit has an issue line that matches this specific regex'
     required: false
-    default: "true"
+    default: "\\*"
   sign-off-regex:
-    description: 'Checks whether the commit has a `Signed-Off By` line and is addressed by a specific email'
+    description: 'Checks whether the commit has an sign off line that matches this specific regex'
     required: false
-# outputs:
+    default: "\\*"
+outputs:
 #   successful-commit: # id of output
 #     description: 'Outputs whether the commit has passed the lint'
-#   failure-reason:
-#     description: 'Describes the reason why the commit has failed the linting process'
+  failure-reason:
+    description: 'Describes the reason why the commit has failed the linting process'
 runs:
   using: 'node12'
   main: './dist/index.js'
