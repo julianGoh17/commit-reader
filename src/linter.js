@@ -15,48 +15,32 @@ function lint(commitObject, options) {
 }
 
 function lintSubject(commitObject, options, violations) {
-    if (commitObject.subject.length > 0) {
-        if (!commitObject.subject.match(options.subjectRegex)) {
-            violations.subject.push("Commit subject line \'" + commitObject.subject + "\'' does match regex: " + options.subjectRegex);
-        } 
-        if (commitObject.subject.length > parseInt(options.subjectMaxChars)) {
-            violations.subject.push("Commit subject line exceeds max char length of: " + parseInt(options.subjectMaxChars));
-        } 
-    } else {
-        violations.subject.push("Commit subject line is missing");
-    }
+    if (!commitObject.subject.match(options.subjectRegex)) {
+        violations.subject.push("Commit subject line '" + commitObject.subject + "' does not match regex: " + options.subjectRegex);
+    } 
+    if (commitObject.subject.length > parseInt(options.subjectMaxChars)) {
+        violations.subject.push("Commit subject line exceeds max char length of: " + parseInt(options.subjectMaxChars));
+    } 
 }
 
 function lintBody(commitObject, options, violations) {
-    if (commitObject.body.length > 0) {
-        for (bodyLine in commitObject.body) {
-            if (bodyLine.length > parseInt(options.bodyLineMaxChars)) {
-                violations.body.push("Commit body contains line that exceeds max char length of: " + parseInt(bodyLine.bodyLineMaxChars));
-                return;
-            } 
-        }
-    } else {
-        violations.body.push("Commit body line is missing");
-    }
+    commitObject.body.forEach(bodyLine => {
+        if (bodyLine.length > parseInt(options.bodyLineMaxChars)) {
+            violations.body.push("Commit body contains line that exceeds max char length of: " + parseInt(options.bodyLineMaxChars));
+            return;
+        } 
+    });
 }
 
 function lintIssue(commitObject, options, violations) {
-    if (commitObject.issue.length > 0) {
-        if (!commitObject.issue.match(options.issueRegex)) {
-            violations.issue.push("Commit issue line is does not match regex: " + options.issueRegex);
-        } 
-    } else {
-        violations.issue.push("Commit issue line is missing");
-    }
+    if (!commitObject.issue.match(options.issueRegex)) {
+        violations.issue.push("Commit issue line does not match regex: " + options.issueRegex);
+    } 
 }
 
 function lintSignOff(commitObject, options, violations) {
-    if (commitObject.signOff.length > 0) {
-        if (!commitObject.signOff.match(options.signOff)) {
-            violations.signOff.push("Commit sign off line is does not match regex: " + options.signOff);
-        } 
-    } else {
-        violations.signOff.push("Commit sign off line is missing");
+    if (!commitObject.signOff.match(options.signOffRegex)) {
+        violations.signOff.push("Commit sign off line does not match regex: " + options.signOffRegex);
     }
 }
 

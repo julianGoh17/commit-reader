@@ -1,4 +1,5 @@
 const linter = require("../src/linter");
+const uuid = require("uuid");
 
 const commit = {
     subject: "feat: You shall not pass",
@@ -17,7 +18,7 @@ const minimalCommit = {
 const strictOptions = {
     subjectMaxChars: "50",
     subjectRegex: "(feat|docs|test):([a-z]|[A-Z]| |[0-9])*",
-    bodyLineMaxChars: "75",
+    bodyLineMaxChars: "50",
     issueRegex: "(Resolves|Closes|Contributes to|): ([a-z]|[A-Z]| |[0-9])*#([a-z]|[A-Z]| |[0-9])*",
     signOffRegex: "(Signed-off-by): ([a-z]|[A-Z]| |[0-9])* <([a-z]|[A-Z]| |[0-9])*@([a-z]|[A-Z]| |[0-9]|.)*>"
 };
@@ -93,29 +94,61 @@ describe("Test linting of perfectly valid commits depending on configurations", 
 
 describe("Test linting of invalid subject line commits", () => {
     test("it should return object with subject violations for not matching the required regex", () => {
-
+        const violations = linter.lint(minimalCommit, strictOptions);
+        expect(violations.subject).toHaveLength(1);
+        expect(violations.subject[0]).toEqual("Commit subject line '" + minimalCommit.subject + "' does not match regex: " + strictOptions.subjectRegex);
     });
 
     test("it should return object with subject violations for subject line being greater than max chars", () => {
+        const superLongSubject = createDeepClone(commit);
+        superLongSubject.subject = "feat: " + uuid.v4() + uuid.v4();
+        
+        const violations = linter.lint(superLongSubject, strictOptions);
+        expect(violations.subject).toHaveLength(1);
+        expect(violations.subject[0]).toEqual("Commit subject line exceeds max char length of: " + parseInt(50));
+    });
 
+    test("it should return object with multiple subject violations", () => {
+        const superLongSubject = createDeepClone(commit);
+        superLongSubject.subject = uuid.v4() + uuid.v4();
+
+        const violations = linter.lint(superLongSubject, strictOptions);
+        expect(violations.subject).toHaveLength(2);
+        expect(violations.subject[0]).toEqual("Commit subject line '" + superLongSubject.subject + "' does not match regex: " + strictOptions.subjectRegex);
+        expect(violations.subject[1]).toEqual("Commit subject line exceeds max char length of: " + parseInt(50));
     });
 });
 
 describe("Test linting of invalid body commits", () => {
     test("it should return object with body violations for body line being greater than max chars", () => {
-    
+        const superLongBody = createDeepClone(commit);
+        superLongBody.body = [uuid.v4() + uuid.v4()];
+        
+        const violations = linter.lint(superLongBody, strictOptions);
+        expect(violations.body).toHaveLength(1);
+        expect(violations.body[0]).toEqual("Commit body contains line that exceeds max char length of: " + parseInt(strictOptions.bodyLineMaxChars));
     });
 });
 
 describe("Test linting of invalid issue commits", () => {
     test("it should return object with issue violations for not having issue reference", () => {
-    
+        const invalidIssueRegex = createDeepClone(commit);
+        invalidIssueRegex.issue = uuid.v4() + uuid.v4();
+
+        const violations = linter.lint(invalidIssueRegex, strictOptions);
+        expect(violations.issue).toHaveLength(1);
+        expect(violations.issue[0]).toEqual("Commit issue line does not match regex: " + strictOptions.issueRegex);    
     });
 });
 
 describe("Test linting of invalid signOff commits", () => {
     test("it should return object with sign off violations for not having sign off reference", () => {
-    
+        const invalidSignOffRegex = createDeepClone(commit);
+        invalidSignOffRegex.signOff = uuid.v4() + uuid.v4();
+
+        const violations = linter.lint(invalidSignOffRegex, strictOptions);
+        expect(violations.signOff).toHaveLength(1);
+        expect(violations.signOff[0]).toEqual("Commit sign off line does not match regex: " + strictOptions.signOffRegex);    
     });
 });
 
