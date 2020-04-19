@@ -44,18 +44,4 @@ function lintSignOff(commitObject, options, violations) {
     }
 }
 
-// /**
-//  * Gets the configuration of what a commit object should look like based 
-//  * on what the user has specified.
-//  */
-// function getOptions() {
-//     return {
-//         subjectMaxChars: core.getInput("subject-line-max-chars"),
-//         subjectRegex: core.getInput("subject-line-regex"),
-//         bodyLineMaxChars: core.getInput("body-line-max-chars"),
-//         needsIssueReference: core.getInput("issue-reference"),
-//         needsSignOff: core.getInput("sign-off")
-//     }
-// }
-
 module.exports = { lint };

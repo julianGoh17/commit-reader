@@ -152,6 +152,20 @@ describe("Test linting of invalid signOff commits", () => {
     });
 });
 
+describe("Test multiple types of violations for a single commit", () => {
+    test("it should return object with sign off violation and issue line violation", () => {
+        const regexViolationCommit = createDeepClone(commit);
+        regexViolationCommit.issue = uuid.v4() + uuid.v4();
+        regexViolationCommit.signOff = uuid.v4() + uuid.v4();
+
+        const violations = linter.lint(regexViolationCommit, strictOptions);
+        expect(violations.issue).toHaveLength(1);
+        expect(violations.issue[0]).toEqual("Commit issue line does not match regex: " + strictOptions.issueRegex);    
+        expect(violations.signOff).toHaveLength(1);
+        expect(violations.signOff[0]).toEqual("Commit sign off line does not match regex: " + strictOptions.signOffRegex);
+    });
+});
+
 function createDeepClone(src) {
     return Object.assign({}, src);
 }
